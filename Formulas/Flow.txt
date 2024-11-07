@@ -12,12 +12,7 @@
 【Dataverseコネクタ／5000件超】5kから100k
 	改ページ：オン
 	しきい値：100000
-	Fetch Xml クエリ：
-		
-		   
-		    
-		   
-		
+	Fetch Xml クエリ：<fetch\n   page=\"@{variables('Dataverseコネクタ／5000件超 ページ番号')}\">\n   <entity name=\"ya_member\">\n    <attribute name=\"ya_memberid\"/>\n   </entity>\n</fetch>
 
 
 
