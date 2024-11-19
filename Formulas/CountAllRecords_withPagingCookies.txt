@@ -1,4 +1,4 @@
-行を一覧にする
+【行を一覧にする】
 
 <fetch page="@{variables('ページ番号')}" @{variables('ページングCookie')}>
  <entity name='ya_member'>
@@ -8,13 +8,13 @@
 
 
 
-Morerecordsの設定
+【MoreRecordsの設定】
 
 @{if(empty(string(outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.morerecords'])), false, outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.morerecords'])}
 
 
 
-ページングCookieの設定
+【ページングCookieの設定】
 
 paging-cookie="@{if(
   empty(
@@ -49,3 +49,5 @@ paging-cookie="@{if(
     '&quot;'
   )
 )}"
+
+

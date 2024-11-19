@@ -4,6 +4,8 @@ Power Automate クラウドフローで Dataverse テーブルのレコード数
 
 ---
 
+## CountRecords
+
 ```
 【Dataverseコネクタ／5000件以下】
 	列を選択する：ya_memberid
@@ -42,6 +44,65 @@ Power Automate クラウドフローで Dataverse テーブルのレコード数
 
 	body('Dataverse_Unbound／5000件超_JSONの解析')?['EntityRecordCountCollection']?['Values']
 ```
+
+## CountAllRecords_withPagingCookies
+
+```
+【行を一覧にする】
+	<fetch page="@{variables('ページ番号')}" @{variables('ページングCookie')}>
+	<entity name='ya_member'>
+	<all-attributes/>
+	</entity>
+	</fetch>
+
+
+
+【MoreRecordsの設定】
+	@{if(empty(string(outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.morerecords'])), false, outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.morerecords'])}
+
+
+
+【ページングCookieの設定】
+	paging-cookie="@{if(
+	empty(
+		outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.fetchxmlpagingcookie']
+	),
+	'',
+	replace(
+		replace(
+		replace(
+			decodeUriComponent(
+			decodeUriComponent(
+				first(
+				split(
+					last(
+					split(
+						outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.fetchxmlpagingcookie'],
+						'pagingcookie="'
+					)
+					),
+					'" '
+				)
+				)
+			)
+			),
+			'<',
+			'&lt;'
+		),
+		'>',
+		'&gt;'
+		),
+		'"',
+		'&quot;'
+	)
+	)}"
+```
+
+## Solutions
+
+- 1_0_0_0 CountRecordsのみ + CountAllRecords_withPagingCookiesフローパッケージ
+- 1_0_1_0 CountAllRecords_withPagingCookiesを追加
+- 1_0_2_0 CountAllRecords_withPagingCookiesのみ
 
 ---
 
