@@ -1,0 +1,51 @@
+行を一覧にする
+
+<fetch page="@{variables('ページ番号')}" @{variables('ページングCookie')}>
+ <entity name='ya_member'>
+  <all-attributes/>
+ </entity>
+</fetch>
+
+
+
+Morerecordsの設定
+
+@{if(empty(string(outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.morerecords'])), false, outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.morerecords'])}
+
+
+
+ページングCookieの設定
+
+paging-cookie="@{if(
+  empty(
+    outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.fetchxmlpagingcookie']
+  ),
+  '',
+  replace(
+    replace(
+      replace(
+        decodeUriComponent(
+          decodeUriComponent(
+            first(
+              split(
+                last(
+                  split(
+                    outputs('行を一覧にする')?['body']?['@Microsoft.Dynamics.CRM.fetchxmlpagingcookie'],
+                    'pagingcookie="'
+                  )
+                ),
+                '" '
+              )
+            )
+          )
+        ),
+        '<',
+        '&lt;'
+      ),
+      '>',
+      '&gt;'
+    ),
+    '"',
+    '&quot;'
+  )
+)}"
